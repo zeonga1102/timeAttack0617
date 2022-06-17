@@ -1,4 +1,4 @@
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, hashers
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
@@ -18,7 +18,7 @@ class UserApiView(APIView):
     # 로그인
     def post(self, request):
         email = request.data.get('email', '')
-        password = request.data.get('password', '')
+        password = hashers.make_password(request.data.get('password', ''))
 
         user = authenticate(request, email=email, password=password)
         if not user:
